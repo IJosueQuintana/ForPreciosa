@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Para Mi Amor ❤️</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        .floating-heart {
+            position: fixed;
+            bottom: 200px;
+            right: 35px;
+            width: 350px;
+            height: 300px;
+            background-image: url('corazon.png'); /* Reemplaza con la imagen de tu corazón */
+            background-size: cover;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem; /* Ajusta el tamaño de las iniciales */
+            color: white;
+            text-shadow: 2px 2px 4px black; /* Sombra para las iniciales */
+        }
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Roboto', sans-serif;
+            background-color: #4B0082; /* Fondo morado */
+            text-align: center;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .container {
+            display: flex;
+            width: 80vw;
+            justify-content: space-between;
+        }
+        .dedication, .counter {
+            width: 20%;
+            font-size: 1.5rem;
+            color: white;
+            padding: 20px;
+        }
+        .carousel {
+            width: 50vw;
+            height: 60vh;
+            overflow: hidden;
+            border-radius: 15px;
+            box-shadow: 0px 0px 15px rgba(255, 255, 255, 0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .carousel img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            display: none;
+            border-radius: 15px;
+        }
+        .carousel img.active {
+            display: block;
+            animation: fadeIn 1.5s;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .phrase {
+            width: 50vw;
+            padding: 20px;
+            color: white;
+            font-size: 1.5rem;
+            text-align: center;
+            animation: blink 2s infinite alternate;
+        }
+        @keyframes blink {
+            0% { opacity: 1; }
+            100% { opacity: 0.7; }
+        }
+        .button-container {
+            margin-top: 20px;
+        }
+        .hidden {
+            display: none;
+            font-size: 1.5rem;
+            color: white;
+            margin-top: 20px;
+        }
+        audio {
+            display: none;
+        }
+        .heart {
+            position: absolute;
+            color: red;
+            font-size: 40px; /* Corazones más grandes */
+            opacity: 0.7;
+            animation: fall 5s linear infinite;
+        }
+        @keyframes fall {
+            from { transform: translateY(-100vh); opacity: 1; }
+            to { transform: translateY(100vh); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+    <h1>Para Mi Amor ❤️</h1>
+    
+    <div class="container">
+        <div class="dedication">Siempre juntos, en cada latido de mi corazón. ❤️</div>
+        <div class="carousel">
+            <img src="foto1.jpg" class="active" data-phrase="Eres mi lugar favorito en el mundo." width="1080" height="1080">
+            <img src="foto2.jpg" data-phrase="Juntos en cada paso del camino." width="1080" height="1040">
+            <img src="foto3.jpg" data-phrase="Nuestro amor es infinito." width="1200" height="1599">
+            <img src="foto4.jpg" data-phrase="Cada día a tu lado es un regalo." width="1080" height="1080">
+            <img src="foto5.jpg" data-phrase="Eres mi razón para sonreír." width="1080" height="1080">
+            <img src="foto6.jpg" data-phrase="Siempre en mi corazón y pensamientos." width="1080" height="1080">
+            <img src="foto7.jpg" data-phrase="Eres la melodía de mi vida." width="1080" height="1080">
+            <img src="foto8.jpg" data-phrase="Nuestro amor no tiene límites." width="1080" height="1080">
+            <img src="foto9.jpg" data-phrase="Cada momento contigo es mágico." width="1080" height="1080">
+            <img src="foto10.jpg" data-phrase="Gracias por ser mi todo." width="1080" height="1080">
+            <img src="foto11.jpg" data-phrase="Eres mi mayor bendición." width="1080" height="1080">
+            <img src="foto12.jpg" data-phrase="A tu lado el mundo es perfecto." width="1080" height="1080">
+            <img src="foto13.jpg" data-phrase="Eres mi hogar, mi paz, mi amor." width="1080" height="1080">
+            <img src="foto14.jpg" data-phrase="Tu amor es mi fortaleza." width="1080" height="1080">
+            <img src="foto15.jpg" data-phrase="Cada día contigo es un sueño hecho realidad." width="1080" height="1080">
+            <img src="foto16.jpg" data-phrase="Nuestro amor es eterno." width="1080" height="1080">
+            <img src="foto17.jpg" data-phrase="Siempre juntos, siempre felices." width="1080" height="1080">
+        </div>
+        <div class="counter" id="days-counter"></div>
+    </div>
+    <div class="phrase"></div>
+    <div class="button-container">
+        <button onclick="showMessage()">Presione aquí</button>
+    </div>
+    <div class="floating-heart">
+        J &amp; P
+    </div>
+    <div id="valentine-message" class="hidden">¿Aceptas ser mi San Valentín? ❤️</div>
+    <audio id="background-music" autoplay loop>
+        <source src="cancion.mp3" type="audio/mp3">
+    </audio>
+    <script>
+        let index = 0;
+        let images = document.querySelectorAll('.carousel img');
+        let phraseElement = document.querySelector('.phrase');
+        function changeImage() {
+            images[index].classList.remove('active');
+            index = (index + 1) % images.length;
+            images[index].classList.add('active');
+            phraseElement.textContent = images[index].dataset.phrase;
+        }
+        setInterval(changeImage, 3000);
+        function calculateDaysTogether() {
+            let startDate = new Date("2023-12-15");
+            let today = new Date();
+            let difference = Math.floor((today - startDate) / (1000 * 60 * 60 * 24));
+            document.getElementById("days-counter").textContent = "Días juntos: " + difference;
+        }
+        calculateDaysTogether();
+        function showMessage() {
+            document.getElementById("valentine-message").classList.remove("hidden");
+        }
+        function createHeart() {
+            let heart = document.createElement("div");
+            heart.className = "heart";
+            heart.innerHTML = "❤️";
+            heart.style.left = Math.random() * 100 + "vw";
+            heart.style.animationDuration = (Math.random() * 3 + 2) + "s";
+            heart.style.fontSize =  (Math.random() * 20 + 30) + "px"; // Tamaño variable
+            document.body.appendChild(heart);
+            setTimeout(() => heart.remove(), 5000);
+        }
+        setInterval(createHeart, 200);
+    </script>
+</body>
+</html>
